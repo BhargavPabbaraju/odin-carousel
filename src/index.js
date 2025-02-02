@@ -71,3 +71,5 @@ function initialRender() {
 }
 
 initialRender();
+
+setInterval(next, 5000);
