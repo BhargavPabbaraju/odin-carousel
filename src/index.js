@@ -1,29 +1,35 @@
 import { images } from "./images";
 import "./styles.css";
 
-function setActiveSlide(slideId) {
-  renderSlides(slideId);
+function setActiveSlide(index) {
+  state.activeIndex = index;
+  renderSlides();
 }
 
-function renderCircle(slideId, isActive) {
+const state = {
+  activeIndex: 0,
+  images: images,
+};
+
+function renderCircle(index, isActive) {
   const circle = document.createElement("span");
   circle.classList.add("material-symbols-outlined");
   circle.classList.add("circle");
   circle.innerText = "fiber_manual_record";
-  circle.addEventListener("click", () => setActiveSlide(slideId));
+  circle.addEventListener("click", () => setActiveSlide(index));
   if (isActive) {
     circle.classList.add("material-symbols-outlined-filled");
   }
   return circle;
 }
 
-function renderSlides(activeSlide = images[0].id) {
+function renderSlides() {
   const slides = document.getElementById("slides");
   const circles = document.getElementById("circles");
   slides.replaceChildren();
   circles.replaceChildren();
-  images.map((image) => {
-    const isActive = image.id == activeSlide;
+  state.images.map((image, index) => {
+    const isActive = index == state.activeIndex;
     const slide = document.createElement("div");
     slide.classList.add("slide");
     const title = document.createElement("h3");
@@ -38,9 +44,30 @@ function renderSlides(activeSlide = images[0].id) {
     if (!isActive) {
       slide.style.display = "none";
     }
-    const circle = renderCircle(image.id, isActive);
+    const circle = renderCircle(index, isActive);
     circles.appendChild(circle);
   });
 }
 
-renderSlides();
+function prev() {
+  const prevIndex =
+    state.activeIndex > 0 ? state.activeIndex - 1 : state.images.length - 1;
+  state.activeIndex = prevIndex;
+  renderSlides();
+}
+function next() {
+  const nextIndex =
+    state.activeIndex == state.images.length - 1 ? 0 : state.activeIndex + 1;
+  state.activeIndex = nextIndex;
+  renderSlides();
+}
+
+function initialRender() {
+  renderSlides();
+  const leftArrow = document.getElementById("left-arrow");
+  const rightArrow = document.getElementById("right-arrow");
+  leftArrow.addEventListener("click", prev);
+  rightArrow.addEventListener("click", next);
+}
+
+initialRender();

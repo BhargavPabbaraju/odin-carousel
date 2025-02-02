@@ -5,11 +5,8 @@ import drStoneImg from "../assets/dr_stone.jpg";
 import onePieceImg from "../assets/one_piece.jpg";
 import pokemonImg from "../assets/pokemon.jpg";
 
-import { v4 as uuidv4 } from "uuid";
-
 class Image {
   constructor(title, source) {
-    this.id = uuidv4();
     this.title = title;
     this.source = source;
   }
